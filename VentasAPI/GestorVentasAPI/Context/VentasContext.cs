@@ -8,7 +8,7 @@ namespace GestorVentasAPI.Context
     public class VentasContext : DbContext
     {
         public DbSet<Cliente> Clientes { get; set; }
-        public DbSet<DeudaCliente> Products { get; set; }
+        public DbSet<DeudaCliente> DeudaClientes { get; set; }
         public DbSet<FlujoFondo> FlujoFondos { get; set; }
         public DbSet<OrdenDeVenta> OrdenDeVentas { get; set; }
         public DbSet<Producto> Productos { get; set; }

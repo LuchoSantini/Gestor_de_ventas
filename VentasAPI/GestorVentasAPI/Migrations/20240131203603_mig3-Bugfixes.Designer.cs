@@ -3,6 +3,7 @@ using System;
 using GestorVentasAPI.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GestorVentasAPI.Migrations
 {
     [DbContext(typeof(VentasContext))]
-    partial class VentasContextModelSnapshot : ModelSnapshot
+    [Migration("20240131203603_mig3-Bugfixes")]
+    partial class mig3Bugfixes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.26");
@@ -142,7 +144,7 @@ namespace GestorVentasAPI.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Descripcion")
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -152,9 +154,6 @@ namespace GestorVentasAPI.Migrations
 
                     b.Property<decimal>("Precio")
                         .HasColumnType("TEXT");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("INTEGER");
 
                     b.HasKey("IdProducto");
 

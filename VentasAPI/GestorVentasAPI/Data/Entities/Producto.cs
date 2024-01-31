@@ -8,9 +8,10 @@ namespace GestorVentasAPI.Data.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdProducto { get; set; }
-        public string Name { get; set; } = string.Empty;
+        public string Nombre { get; set; } = string.Empty;
         public string Calibre { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
+        public string Descripcion { get; set; } = string.Empty;
         public decimal Precio { get; set;}
+        public bool Status { get; set; }
     }
 }

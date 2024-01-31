@@ -25,6 +25,8 @@ namespace GestorVentasAPI
 
             #region Inyecciones de dependencia
             builder.Services.AddScoped<IClienteService, ClienteService>();
+            builder.Services.AddScoped<IVentaService, VentaService>();
+            builder.Services.AddScoped<IProductoService, ProductoService>();
             #endregion
 
 
