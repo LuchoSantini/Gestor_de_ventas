@@ -31,10 +31,11 @@ namespace GestorVentasAPI.Migrations
                 {
                     IdProducto = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Nombre = table.Column<string>(type: "TEXT", nullable: false),
                     Calibre = table.Column<string>(type: "TEXT", nullable: false),
-                    Description = table.Column<string>(type: "TEXT", nullable: false),
-                    Precio = table.Column<decimal>(type: "TEXT", nullable: false)
+                    Descripcion = table.Column<string>(type: "TEXT", nullable: false),
+                    Precio = table.Column<decimal>(type: "TEXT", nullable: false),
+                    Status = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -57,27 +58,42 @@ namespace GestorVentasAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Products",
+                name: "DeudaClientes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Status = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Estado = table.Column<int>(type: "INTEGER", nullable: false),
                     MontoDeuda = table.Column<decimal>(type: "TEXT", nullable: false),
-                    ClienteId = table.Column<int>(type: "INTEGER", nullable: true),
-                    IdCliente = table.Column<int>(type: "INTEGER", nullable: false),
-                    ClienteId1 = table.Column<int>(type: "INTEGER", nullable: false)
+                    IdVenta = table.Column<int>(type: "INTEGER", nullable: false),
+                    IdCliente = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Products", x => x.Id);
+                    table.PrimaryKey("PK_DeudaClientes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Products_Clientes_ClienteId",
-                        column: x => x.ClienteId,
+                        name: "FK_DeudaClientes_Clientes_IdCliente",
+                        column: x => x.IdCliente,
                         principalTable: "Clientes",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FlujoFondos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    IngresosClientes = table.Column<decimal>(type: "TEXT", nullable: false),
+                    MontoFinal = table.Column<decimal>(type: "TEXT", nullable: false),
+                    IdCliente = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FlujoFondos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Products_Clientes_IdCliente",
+                        name: "FK_FlujoFondos_Clientes_IdCliente",
                         column: x => x.IdCliente,
                         principalTable: "Clientes",
                         principalColumn: "Id",
@@ -90,7 +106,7 @@ namespace GestorVentasAPI.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Status = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Estado = table.Column<int>(type: "INTEGER", nullable: false),
                     MontoVentas = table.Column<decimal>(type: "TEXT", nullable: false),
                     IdCliente = table.Column<int>(type: "INTEGER", nullable: false)
                 },
@@ -106,35 +122,6 @@ namespace GestorVentasAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FlujoFondos",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    IngresosClientes = table.Column<decimal>(type: "TEXT", nullable: false),
-                    PagoProveedores = table.Column<decimal>(type: "TEXT", nullable: false),
-                    MontoFinal = table.Column<decimal>(type: "TEXT", nullable: false),
-                    IdCliente = table.Column<int>(type: "INTEGER", nullable: false),
-                    IdProveedor = table.Column<int>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FlujoFondos", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_FlujoFondos_Clientes_IdCliente",
-                        column: x => x.IdCliente,
-                        principalTable: "Clientes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_FlujoFondos_Proveedors_IdProveedor",
-                        column: x => x.IdProveedor,
-                        principalTable: "Proveedors",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "OrdenDeVentas",
                 columns: table => new
                 {
@@ -142,8 +129,7 @@ namespace GestorVentasAPI.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     IdVenta = table.Column<int>(type: "INTEGER", nullable: false),
                     Cantidad = table.Column<int>(type: "INTEGER", nullable: false),
-                    IdProducto = table.Column<int>(type: "INTEGER", nullable: false),
-                    VentaId = table.Column<int>(type: "INTEGER", nullable: true)
+                    IdProducto = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -155,11 +141,17 @@ namespace GestorVentasAPI.Migrations
                         principalColumn: "IdProducto",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_OrdenDeVentas_Ventas_VentaId",
-                        column: x => x.VentaId,
+                        name: "FK_OrdenDeVentas_Ventas_IdVenta",
+                        column: x => x.IdVenta,
                         principalTable: "Ventas",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DeudaClientes_IdCliente",
+                table: "DeudaClientes",
+                column: "IdCliente");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FlujoFondos_IdCliente",
@@ -167,29 +159,14 @@ namespace GestorVentasAPI.Migrations
                 column: "IdCliente");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FlujoFondos_IdProveedor",
-                table: "FlujoFondos",
-                column: "IdProveedor");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_OrdenDeVentas_IdProducto",
                 table: "OrdenDeVentas",
                 column: "IdProducto");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrdenDeVentas_VentaId",
+                name: "IX_OrdenDeVentas_IdVenta",
                 table: "OrdenDeVentas",
-                column: "VentaId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Products_ClienteId",
-                table: "Products",
-                column: "ClienteId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Products_IdCliente",
-                table: "Products",
-                column: "IdCliente");
+                column: "IdVenta");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ventas_IdCliente",
@@ -200,13 +177,13 @@ namespace GestorVentasAPI.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "DeudaClientes");
+
+            migrationBuilder.DropTable(
                 name: "FlujoFondos");
 
             migrationBuilder.DropTable(
                 name: "OrdenDeVentas");
-
-            migrationBuilder.DropTable(
-                name: "Products");
 
             migrationBuilder.DropTable(
                 name: "Proveedors");

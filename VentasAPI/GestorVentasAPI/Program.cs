@@ -27,6 +27,7 @@ namespace GestorVentasAPI
             builder.Services.AddScoped<IClienteService, ClienteService>();
             builder.Services.AddScoped<IVentaService, VentaService>();
             builder.Services.AddScoped<IProductoService, ProductoService>();
+            builder.Services.AddScoped<IDeudaClienteService, DeudaClienteService>();
             #endregion
 
 

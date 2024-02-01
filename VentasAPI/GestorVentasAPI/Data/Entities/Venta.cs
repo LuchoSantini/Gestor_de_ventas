@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using GestorVentasAPI.Enums;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GestorVentasAPI.Data.Entities
@@ -8,7 +9,7 @@ namespace GestorVentasAPI.Data.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public bool Status { get; set; }
+        public EstadoVenta Estado { get; set; }
         public decimal MontoVentas { get; set; }
 
         [ForeignKey("IdCliente")]

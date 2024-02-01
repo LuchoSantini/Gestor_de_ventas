@@ -9,7 +9,6 @@ namespace GestorVentasAPI.Services.Implementations
     public class ProductoService : IProductoService
     {
         private readonly VentasContext _context;
-
         public ProductoService(VentasContext context)
         {
             _context = context;
