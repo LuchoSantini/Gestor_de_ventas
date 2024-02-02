@@ -31,10 +31,11 @@ namespace GestorVentasAPI.Services.Implementations
         public OrdenDeVenta AgregarProductoOrdenDeVenta(OrdenDeVentaDTO ordenDeVentaDTO)
         {
             var producto = _context.Productos
-                .FirstOrDefault(p => p.IdProducto == ordenDeVentaDTO.IdProducto);
+                .FirstOrDefault(p => p.Id == ordenDeVentaDTO.IdProducto);
 
             var venta = _context.Ventas.FirstOrDefault(o => o.Id == ordenDeVentaDTO.IdVenta && o.IdCliente == ordenDeVentaDTO.IdCliente);
 
+            // Acá se asignan valores a la tabla OrdenDeVenta
             var nuevaOrdenDeVenta = new OrdenDeVenta
             {
                 IdVenta = ordenDeVentaDTO.IdVenta,
@@ -42,11 +43,27 @@ namespace GestorVentasAPI.Services.Implementations
                 Cantidad = ordenDeVentaDTO.Cantidad,
             };
 
+            // Dependiendo del estado de la Venta generada se añade o no el monto a la tabla IngresoCliente
+
             decimal montoTotalVenta = nuevaOrdenDeVenta.Cantidad * producto.Precio;
-            venta.MontoVentas += montoTotalVenta;
+            var deudaExistente = _context.DeudaClientes.FirstOrDefault(dc => dc.IdVenta == venta.Id);
 
-
-            _context.OrdenDeVentas.Add(nuevaOrdenDeVenta);
+            if (venta?.Estado == EstadoVenta.Cobrada)
+            {
+                venta.MontoVentas += montoTotalVenta;
+                _context.OrdenDeVentas.Add(nuevaOrdenDeVenta);
+            }
+            else if (venta?.Estado == EstadoVenta.Pendiente && deudaExistente == null)
+            {
+                var nuevaDeuda = new DeudaCliente
+                {
+                    IdVenta = venta.Id,
+                    IdCliente = venta.IdCliente,
+                    MontoDeuda = montoTotalVenta,
+                    Estado = EstadoVenta.Pendiente,
+                };
+                _context.DeudaClientes.Add(nuevaDeuda);
+            }
             _context.SaveChanges();
             return nuevaOrdenDeVenta;
         }

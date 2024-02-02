@@ -9,10 +9,12 @@ namespace GestorVentasAPI.Context
     {
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<DeudaCliente> DeudaClientes { get; set; }
+        public DbSet<FlujoFondo> FlujoFondos { get; set; }
         public DbSet<IngresoCliente> IngresoClientes { get; set; }
         public DbSet<OrdenDeVenta> OrdenDeVentas { get; set; }
+        public DbSet<PagoProveedor> PagoProveedors { get; set; }
         public DbSet<Producto> Productos { get; set; }
-        public DbSet<Proveedor> Proveedors { get; set; }
+        public DbSet<Proveedor> Proveedores { get; set; }
         public DbSet<Venta> Ventas { get; set; }
 
 
@@ -53,17 +55,20 @@ namespace GestorVentasAPI.Context
                 .WithMany()
                 .HasForeignKey(ff => ff.IdCliente);
 
-            //modelBuilder.Entity<FlujoFondo>()
-            //    .HasOne(ff => ff.Proveedor)
-            //    .WithMany()
-            //    .HasForeignKey(ff => ff.IdProveedor);
+            modelBuilder.Entity<PagoProveedor>()
+                .HasOne(ff => ff.Proveedor)
+                .WithMany()
+                .HasForeignKey(ff => ff.IdProveedor);
 
-            // Relacion entre FlujoFondo y DeudaCliente
-            //modelBuilder.Entity<FlujoFondo>()
-            //    .HasOne(ff => ff.DeudaCliente)
-            //    .WithMany()
-            //    .HasForeignKey(ff => ff.IdDeudaCliente);
+            modelBuilder.Entity<FlujoFondo>()
+                .HasOne(ff => ff.IngresoCliente)
+                .WithMany()
+                .HasForeignKey(ff => ff.IdIngresoCliente);
 
+            modelBuilder.Entity<FlujoFondo>()
+                .HasOne(ff => ff.PagoProveedor)
+                .WithMany()
+                .HasForeignKey(ff => ff.IdPagoProveedor);
         }
     }
 }

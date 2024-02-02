@@ -21,42 +21,11 @@ namespace GestorVentasAPI.Services.Implementations
                 .FirstOrDefault(x => x.Id == id);
         }
 
-        public DeudaCliente AgregarDeuda(int idVenta)
-        {
-            var venta = _context.Ventas.FirstOrDefault(v => v.Id == idVenta);
-
-            if (venta == null)
-            {
-                return null;
-            }
-
-            // Verificar si ya existe una deuda para la venta
-            var deudaExistente = _context.DeudaClientes.FirstOrDefault(dc => dc.IdVenta == idVenta);
-
-            if (venta.Estado == EstadoVenta.Pendiente && deudaExistente == null)
-            {
-                var nuevaDeuda = new DeudaCliente
-                {
-                    IdVenta = idVenta,
-                    IdCliente = venta.IdCliente,
-                    MontoDeuda = venta.MontoVentas,
-                    Estado = EstadoVenta.Pendiente,
-                };
-
-                _context.DeudaClientes.Add(nuevaDeuda);
-                _context.SaveChanges();
-                return nuevaDeuda;
-            }
-            else
-            {
-                return null;
-            }
-        }
 
         public void CancelarDeudaCompleta(int idDeuda)
         {
             DeudaCliente deudaACancelar = _context.DeudaClientes.FirstOrDefault(dc => dc.Id == idDeuda);
-            
+            Venta ventaACobrar = _context.Ventas.FirstOrDefault(v => v.Id == deudaACancelar.IdVenta);
 
             if (deudaACancelar != null && deudaACancelar.Estado != EstadoVenta.Cobrada)
             {
@@ -69,12 +38,12 @@ namespace GestorVentasAPI.Services.Implementations
                     MontoFinal = deudaACancelar.MontoDeuda
                 };
 
+                ventaACobrar.MontoVentas = deudaACancelar.MontoDeuda;
                 deudaACancelar.MontoDeuda = 0;
                 deudaACancelar.Estado = EstadoVenta.Cobrada;
 
                 _context.Update(deudaACancelar);
                 _context.Add(nuevoFlujoFondo);
-
                 _context.SaveChanges();
             }
         }

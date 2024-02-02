@@ -13,17 +13,17 @@ namespace GestorVentasAPI.Controllers
             _deudaClienteService = deudaClienteService;
         }
 
-        [HttpPost("Agregar Deuda")]
-        public IActionResult AgregarDeuda(int idVenta)
-        {
-            var deuda = _deudaClienteService.AgregarDeuda(idVenta);
+        //[HttpPost("Agregar Deuda")]
+        //public IActionResult AgregarDeuda(int idVenta)
+        //{
+        //    var deuda = _deudaClienteService.AgregarDeuda(idVenta);
 
-            if(deuda == null)
-            {
-                return BadRequest("Error: venta cobrada o inexistente");
-            }
-            return Ok("Deuda agregada");
-        }
+        //    if(deuda == null)
+        //    {
+        //        return BadRequest("Error: venta cobrada o inexistente");
+        //    }
+        //    return Ok("Deuda agregada");
+        //}
 
         [HttpPut("Cancelar Deuda")]
         public IActionResult CancelarDeuda(int idDeuda)

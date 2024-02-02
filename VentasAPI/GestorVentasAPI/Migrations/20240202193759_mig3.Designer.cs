@@ -2,6 +2,7 @@
 using GestorVentasAPI.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GestorVentasAPI.Migrations
 {
     [DbContext(typeof(VentasContext))]
-    partial class VentasContextModelSnapshot : ModelSnapshot
+    [Migration("20240202193759_mig3")]
+    partial class mig3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.26");
@@ -72,46 +74,6 @@ namespace GestorVentasAPI.Migrations
                     b.ToTable("DeudaClientes");
                 });
 
-            modelBuilder.Entity("GestorVentasAPI.Data.Entities.FlujoFondo", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("IdCliente")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("IdIngresoCliente")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("IdPagoProveedor")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("IdProveedor")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<decimal>("Ingresos")
-                        .HasColumnType("TEXT");
-
-                    b.Property<decimal>("Pagos")
-                        .HasColumnType("TEXT");
-
-                    b.Property<decimal>("SaldoFinal")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IdCliente");
-
-                    b.HasIndex("IdIngresoCliente");
-
-                    b.HasIndex("IdPagoProveedor");
-
-                    b.HasIndex("IdProveedor");
-
-                    b.ToTable("FlujoFondos");
-                });
-
             modelBuilder.Entity("GestorVentasAPI.Data.Entities.IngresoCliente", b =>
                 {
                     b.Property<int>("Id")
@@ -158,31 +120,9 @@ namespace GestorVentasAPI.Migrations
                     b.ToTable("OrdenDeVentas");
                 });
 
-            modelBuilder.Entity("GestorVentasAPI.Data.Entities.PagoProveedor", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("IdProveedor")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<decimal>("MontoFinal")
-                        .HasColumnType("TEXT");
-
-                    b.Property<decimal>("Pagos")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IdProveedor");
-
-                    b.ToTable("PagoProveedors");
-                });
-
             modelBuilder.Entity("GestorVentasAPI.Data.Entities.Producto", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("IdProducto")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -204,7 +144,7 @@ namespace GestorVentasAPI.Migrations
                     b.Property<bool>("Status")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("Id");
+                    b.HasKey("IdProducto");
 
                     b.ToTable("Productos");
                 });
@@ -263,41 +203,6 @@ namespace GestorVentasAPI.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("GestorVentasAPI.Data.Entities.FlujoFondo", b =>
-                {
-                    b.HasOne("GestorVentasAPI.Data.Entities.Cliente", "Cliente")
-                        .WithMany()
-                        .HasForeignKey("IdCliente")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("GestorVentasAPI.Data.Entities.IngresoCliente", "IngresoCliente")
-                        .WithMany()
-                        .HasForeignKey("IdIngresoCliente")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("GestorVentasAPI.Data.Entities.PagoProveedor", "PagoProveedor")
-                        .WithMany()
-                        .HasForeignKey("IdPagoProveedor")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("GestorVentasAPI.Data.Entities.Proveedor", "Proveedor")
-                        .WithMany()
-                        .HasForeignKey("IdProveedor")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Cliente");
-
-                    b.Navigation("IngresoCliente");
-
-                    b.Navigation("PagoProveedor");
-
-                    b.Navigation("Proveedor");
-                });
-
             modelBuilder.Entity("GestorVentasAPI.Data.Entities.IngresoCliente", b =>
                 {
                     b.HasOne("GestorVentasAPI.Data.Entities.Cliente", "Cliente")
@@ -324,17 +229,6 @@ namespace GestorVentasAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("Producto");
-                });
-
-            modelBuilder.Entity("GestorVentasAPI.Data.Entities.PagoProveedor", b =>
-                {
-                    b.HasOne("GestorVentasAPI.Data.Entities.Proveedor", "Proveedor")
-                        .WithMany()
-                        .HasForeignKey("IdProveedor")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Proveedor");
                 });
 
             modelBuilder.Entity("GestorVentasAPI.Data.Entities.Venta", b =>

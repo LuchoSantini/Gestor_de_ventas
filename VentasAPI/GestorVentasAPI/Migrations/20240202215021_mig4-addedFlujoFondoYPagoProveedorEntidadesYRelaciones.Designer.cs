@@ -2,6 +2,7 @@
 using GestorVentasAPI.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GestorVentasAPI.Migrations
 {
     [DbContext(typeof(VentasContext))]
-    partial class VentasContextModelSnapshot : ModelSnapshot
+    [Migration("20240202215021_mig4-addedFlujoFondoYPagoProveedorEntidadesYRelaciones")]
+    partial class mig4addedFlujoFondoYPagoProveedorEntidadesYRelaciones
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.26");
