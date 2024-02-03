@@ -31,7 +31,7 @@ namespace GestorVentasAPI.Services.Implementations
             {
                 // Actualizar la deuda a cobrada
 
-                var nuevoFlujoFondo = new IngresoCliente
+                var nuevoFlujoFondoDeudaCancelada = new IngresoCliente
                 {
                     Ingresos = deudaACancelar.MontoDeuda,
                     IdCliente = deudaACancelar.IdCliente,
@@ -42,8 +42,8 @@ namespace GestorVentasAPI.Services.Implementations
                 deudaACancelar.MontoDeuda = 0;
                 deudaACancelar.Estado = EstadoVenta.Cobrada;
 
-                _context.Update(deudaACancelar);
-                _context.Add(nuevoFlujoFondo);
+                _context.DeudaClientes.Update(deudaACancelar);
+                _context.IngresoClientes.Add(nuevoFlujoFondoDeudaCancelada);
                 _context.SaveChanges();
             }
         }

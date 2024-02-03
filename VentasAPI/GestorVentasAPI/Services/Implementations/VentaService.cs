@@ -46,14 +46,32 @@ namespace GestorVentasAPI.Services.Implementations
             // Dependiendo del estado de la Venta generada se añade o no el monto a la tabla IngresoCliente
 
             decimal montoTotalVenta = nuevaOrdenDeVenta.Cantidad * producto.Precio;
-            var deudaExistente = _context.DeudaClientes.FirstOrDefault(dc => dc.IdVenta == venta.Id);
+
+            // Cambio: Obtener el último ingreso del cliente
+            decimal montoAnterior = _context.IngresoClientes
+                .Where(ic => ic.IdCliente == venta.IdCliente)
+                .OrderByDescending(ic => ic.Id)
+                .Select(ic => ic.MontoFinal)
+                .FirstOrDefault();
+
+            // Calculo del nuevo MontoFinal
+            decimal nuevoMontoFinal = montoAnterior + montoTotalVenta;
 
             if (venta?.Estado == EstadoVenta.Cobrada)
             {
                 venta.MontoVentas += montoTotalVenta;
+
+                var nuevoFlujoFondoVenta = new IngresoCliente
+                {
+                    Ingresos = montoTotalVenta,
+                    IdCliente = venta.IdCliente,
+                    MontoFinal = nuevoMontoFinal
+                };
+
+                _context.IngresoClientes.Add(nuevoFlujoFondoVenta);
                 _context.OrdenDeVentas.Add(nuevaOrdenDeVenta);
             }
-            else if (venta?.Estado == EstadoVenta.Pendiente && deudaExistente == null)
+            else if (venta?.Estado == EstadoVenta.Pendiente && _context.DeudaClientes.FirstOrDefault(dc => dc.IdVenta == venta.Id) == null)
             {
                 var nuevaDeuda = new DeudaCliente
                 {
@@ -67,5 +85,8 @@ namespace GestorVentasAPI.Services.Implementations
             _context.SaveChanges();
             return nuevaOrdenDeVenta;
         }
+
+
+
     }
 }
