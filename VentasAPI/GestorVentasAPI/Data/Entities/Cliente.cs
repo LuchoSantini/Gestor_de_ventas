@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using GestorVentasAPI.Enums;
 
 namespace GestorVentasAPI.Data.Entities
 {
@@ -12,9 +13,10 @@ namespace GestorVentasAPI.Data.Entities
         public string Apellido { get; set; } = string.Empty;
         public string Barrio { get; set; } = string.Empty;
         public string Descripcion { get; set; } = string.Empty;
-        public string Tipo { get; set; } = string.Empty; // Hacer un enum
+        public string Tipo { get; set; } = string.Empty;
+        public EstadoUsuario Estado { get; set; }
         public ICollection<DeudaCliente> DeudaClientes { get; set; } = new List<DeudaCliente>();
         public ICollection<Venta> Ventas { get; set; } = new List<Venta>();
-    }
 
+    }
 }

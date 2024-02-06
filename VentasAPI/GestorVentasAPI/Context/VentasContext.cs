@@ -12,7 +12,7 @@ namespace GestorVentasAPI.Context
         public DbSet<FlujoFondo> FlujoFondos { get; set; }
         public DbSet<IngresoCliente> IngresoClientes { get; set; }
         public DbSet<OrdenDeVenta> OrdenDeVentas { get; set; }
-        public DbSet<PagoProveedor> PagoProveedors { get; set; }
+        public DbSet<PagoProveedor> PagoProveedores { get; set; }
         public DbSet<Producto> Productos { get; set; }
         public DbSet<Proveedor> Proveedores { get; set; }
         public DbSet<Venta> Ventas { get; set; }
@@ -59,16 +59,6 @@ namespace GestorVentasAPI.Context
                 .HasOne(ff => ff.Proveedor)
                 .WithMany()
                 .HasForeignKey(ff => ff.IdProveedor);
-
-            modelBuilder.Entity<FlujoFondo>()
-                .HasOne(ff => ff.IngresoCliente)
-                .WithMany()
-                .HasForeignKey(ff => ff.IdIngresoCliente);
-
-            modelBuilder.Entity<FlujoFondo>()
-                .HasOne(ff => ff.PagoProveedor)
-                .WithMany()
-                .HasForeignKey(ff => ff.IdPagoProveedor);
         }
     }
 }

@@ -9,9 +9,11 @@ namespace GestorVentasAPI.Controllers
     public class VentaController : Controller
     {
         private readonly IVentaService _ventaService;
-        public VentaController(IVentaService ventaService)
+        private readonly IFlujoFondoService _flujoFondoService;
+        public VentaController(IVentaService ventaService, IFlujoFondoService flujoFondoService)
         {
             _ventaService = ventaService;
+            _flujoFondoService = flujoFondoService;
         }
 
         [HttpPost("Agregar Orden de Venta")]
@@ -25,6 +27,7 @@ namespace GestorVentasAPI.Controllers
         public IActionResult AgregarProductosOrdenDeVenta([FromBody] OrdenDeVentaDTO ordenDeVentaDTO)
         {
             _ventaService.AgregarProductoOrdenDeVenta(ordenDeVentaDTO);
+            _flujoFondoService.ProcesarFlujoFondos(null);
             return Ok(ordenDeVentaDTO);
         }
     }

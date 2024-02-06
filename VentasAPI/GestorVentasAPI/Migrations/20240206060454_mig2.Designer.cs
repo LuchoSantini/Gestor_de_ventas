@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GestorVentasAPI.Migrations
 {
     [DbContext(typeof(VentasContext))]
-    [Migration("20240201234558_mig1")]
-    partial class mig1
+    [Migration("20240206060454_mig2")]
+    partial class mig2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -35,6 +35,9 @@ namespace GestorVentasAPI.Migrations
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("Estado")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -74,6 +77,26 @@ namespace GestorVentasAPI.Migrations
                     b.ToTable("DeudaClientes");
                 });
 
+            modelBuilder.Entity("GestorVentasAPI.Data.Entities.FlujoFondo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("Ingresos")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Pagos")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("SaldoFinal")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FlujoFondos");
+                });
+
             modelBuilder.Entity("GestorVentasAPI.Data.Entities.IngresoCliente", b =>
                 {
                     b.Property<int>("Id")
@@ -83,7 +106,7 @@ namespace GestorVentasAPI.Migrations
                     b.Property<int>("IdCliente")
                         .HasColumnType("INTEGER");
 
-                    b.Property<decimal>("IngresosClientes")
+                    b.Property<decimal>("Ingresos")
                         .HasColumnType("TEXT");
 
                     b.Property<decimal>("MontoFinal")
@@ -93,7 +116,7 @@ namespace GestorVentasAPI.Migrations
 
                     b.HasIndex("IdCliente");
 
-                    b.ToTable("FlujoFondos");
+                    b.ToTable("IngresoClientes");
                 });
 
             modelBuilder.Entity("GestorVentasAPI.Data.Entities.OrdenDeVenta", b =>
@@ -120,9 +143,31 @@ namespace GestorVentasAPI.Migrations
                     b.ToTable("OrdenDeVentas");
                 });
 
+            modelBuilder.Entity("GestorVentasAPI.Data.Entities.PagoProveedor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("IdProveedor")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("MontoFinal")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Pagos")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdProveedor");
+
+                    b.ToTable("PagoProveedores");
+                });
+
             modelBuilder.Entity("GestorVentasAPI.Data.Entities.Producto", b =>
                 {
-                    b.Property<int>("IdProducto")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -134,6 +179,9 @@ namespace GestorVentasAPI.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("Estado")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -141,10 +189,7 @@ namespace GestorVentasAPI.Migrations
                     b.Property<decimal>("Precio")
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("Status")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("IdProducto");
+                    b.HasKey("Id");
 
                     b.ToTable("Productos");
                 });
@@ -163,13 +208,16 @@ namespace GestorVentasAPI.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("Estado")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Proveedors");
+                    b.ToTable("Proveedores");
                 });
 
             modelBuilder.Entity("GestorVentasAPI.Data.Entities.Venta", b =>
@@ -229,6 +277,17 @@ namespace GestorVentasAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("Producto");
+                });
+
+            modelBuilder.Entity("GestorVentasAPI.Data.Entities.PagoProveedor", b =>
+                {
+                    b.HasOne("GestorVentasAPI.Data.Entities.Proveedor", "Proveedor")
+                        .WithMany()
+                        .HasForeignKey("IdProveedor")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Proveedor");
                 });
 
             modelBuilder.Entity("GestorVentasAPI.Data.Entities.Venta", b =>

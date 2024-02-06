@@ -44,7 +44,6 @@ namespace GestorVentasAPI.Services.Implementations
             };
 
             // Dependiendo del estado de la Venta generada se añade o no el monto a la tabla IngresoCliente
-
             decimal montoTotalVenta = nuevaOrdenDeVenta.Cantidad * producto.Precio;
 
             // Cambio: Obtener el último ingreso del cliente
@@ -85,8 +84,5 @@ namespace GestorVentasAPI.Services.Implementations
             _context.SaveChanges();
             return nuevaOrdenDeVenta;
         }
-
-
-
     }
 }

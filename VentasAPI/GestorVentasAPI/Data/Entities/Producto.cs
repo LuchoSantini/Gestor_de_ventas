@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using GestorVentasAPI.Enums;
 
 namespace GestorVentasAPI.Data.Entities
 {
@@ -12,6 +13,6 @@ namespace GestorVentasAPI.Data.Entities
         public string Calibre { get; set; } = string.Empty;
         public string Descripcion { get; set; } = string.Empty;
         public decimal Precio { get; set;}
-        public bool Status { get; set; }
+        public EstadoProducto Estado { get; set; }
     }
 }

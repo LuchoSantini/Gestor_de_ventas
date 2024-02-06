@@ -2,6 +2,7 @@ using GestorVentasAPI.Context;
 using GestorVentasAPI.Services.Implementations;
 using GestorVentasAPI.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 
 namespace GestorVentasAPI
@@ -28,9 +29,10 @@ namespace GestorVentasAPI
             builder.Services.AddScoped<IVentaService, VentaService>();
             builder.Services.AddScoped<IProductoService, ProductoService>();
             builder.Services.AddScoped<IDeudaClienteService, DeudaClienteService>();
+            builder.Services.AddScoped<IProveedorService, ProveedorService>();
+            builder.Services.AddScoped<IFlujoFondoService,FlujoFondosService>();
+
             #endregion
-
-
 
             var app = builder.Build();
 

@@ -1,6 +1,7 @@
 ﻿using GestorVentasAPI.Context;
 using GestorVentasAPI.Data.Entities;
 using GestorVentasAPI.Data.Models;
+using GestorVentasAPI.Enums;
 using GestorVentasAPI.Services.Interfaces;
 using System;
 
@@ -22,7 +23,7 @@ namespace GestorVentasAPI.Services.Implementations
                 Calibre = productoDTO.Calibre,
                 Descripcion = productoDTO.Descripcion,
                 Precio = productoDTO.Precio,
-                Status = true,
+                Estado = EstadoProducto.Alta,
             };
             _context.Productos.Add(producto);
             _context.SaveChanges();

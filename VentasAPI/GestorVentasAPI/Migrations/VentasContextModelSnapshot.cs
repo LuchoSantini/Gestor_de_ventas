@@ -34,6 +34,9 @@ namespace GestorVentasAPI.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("Estado")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -78,18 +81,6 @@ namespace GestorVentasAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("IdCliente")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("IdIngresoCliente")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("IdPagoProveedor")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("IdProveedor")
-                        .HasColumnType("INTEGER");
-
                     b.Property<decimal>("Ingresos")
                         .HasColumnType("TEXT");
 
@@ -100,14 +91,6 @@ namespace GestorVentasAPI.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("IdCliente");
-
-                    b.HasIndex("IdIngresoCliente");
-
-                    b.HasIndex("IdPagoProveedor");
-
-                    b.HasIndex("IdProveedor");
 
                     b.ToTable("FlujoFondos");
                 });
@@ -177,7 +160,7 @@ namespace GestorVentasAPI.Migrations
 
                     b.HasIndex("IdProveedor");
 
-                    b.ToTable("PagoProveedors");
+                    b.ToTable("PagoProveedores");
                 });
 
             modelBuilder.Entity("GestorVentasAPI.Data.Entities.Producto", b =>
@@ -194,15 +177,15 @@ namespace GestorVentasAPI.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("Estado")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<decimal>("Precio")
                         .HasColumnType("TEXT");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -222,6 +205,9 @@ namespace GestorVentasAPI.Migrations
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("Estado")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -261,41 +247,6 @@ namespace GestorVentasAPI.Migrations
                         .HasForeignKey("IdCliente")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("GestorVentasAPI.Data.Entities.FlujoFondo", b =>
-                {
-                    b.HasOne("GestorVentasAPI.Data.Entities.Cliente", "Cliente")
-                        .WithMany()
-                        .HasForeignKey("IdCliente")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("GestorVentasAPI.Data.Entities.IngresoCliente", "IngresoCliente")
-                        .WithMany()
-                        .HasForeignKey("IdIngresoCliente")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("GestorVentasAPI.Data.Entities.PagoProveedor", "PagoProveedor")
-                        .WithMany()
-                        .HasForeignKey("IdPagoProveedor")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("GestorVentasAPI.Data.Entities.Proveedor", "Proveedor")
-                        .WithMany()
-                        .HasForeignKey("IdProveedor")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Cliente");
-
-                    b.Navigation("IngresoCliente");
-
-                    b.Navigation("PagoProveedor");
-
-                    b.Navigation("Proveedor");
                 });
 
             modelBuilder.Entity("GestorVentasAPI.Data.Entities.IngresoCliente", b =>
