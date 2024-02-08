@@ -33,7 +33,7 @@ namespace GestorVentasAPI.Controllers
         [HttpGet("Get Proveedores")]
         public IActionResult GetProveedores()
         {
-            var pagos = _proveedorService.GetPagoProveedores();
+            var pagos = _proveedorService.GetProveedores();
             return Ok(pagos);
         }
     }

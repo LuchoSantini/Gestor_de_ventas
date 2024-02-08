@@ -8,5 +8,6 @@ namespace GestorVentasAPI.Services.Interfaces
         public Proveedor AgregarProveedor(ProveedorDTO proveedorDTO);
         public PagoProveedor AgregarPago(PagoProveedorDTO pagoProveedorDTO);
         public List<PagoProveedor> GetPagoProveedores();
+        public List<Proveedor> GetProveedores();
     }
 }
