@@ -14,6 +14,6 @@ namespace GestorVentasAPI.Data.Entities
         public EstadoVenta Estado { get; set; }
         public decimal MontoDeuda { get; set; } // Monto acumulado por ventas
         public int IdVenta { get; set; }
-        
+        public string CreacionDeuda { get; set; }
     }
 }

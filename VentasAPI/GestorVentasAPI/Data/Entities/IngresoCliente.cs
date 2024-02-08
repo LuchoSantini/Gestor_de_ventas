@@ -13,6 +13,7 @@ namespace GestorVentasAPI.Data.Entities
         public int IdCliente { get; set; }
         public decimal Ingresos { get; set; }
         public decimal MontoFinal { get; set; }
+        public string FechaIngreso { get; set; }
         // Agregar la prop fecha para que la tabla tenga sentido
     }
 }

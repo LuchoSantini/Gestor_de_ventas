@@ -27,6 +27,9 @@ namespace GestorVentasAPI.Services.Implementations
             DeudaCliente deudaACancelar = _context.DeudaClientes.FirstOrDefault(dc => dc.Id == idDeuda);
             Venta ventaACobrar = _context.Ventas.FirstOrDefault(v => v.Id == deudaACancelar.IdVenta);
 
+            DateTime fecha = DateTime.Now;
+            string fechaFormateada = fecha.ToString("dd/MM/yyyy HH:mm");
+
             if (deudaACancelar != null && deudaACancelar.Estado != EstadoVenta.Cobrada)
             {
                 // Actualizar la deuda a cobrada
@@ -35,7 +38,8 @@ namespace GestorVentasAPI.Services.Implementations
                 {
                     Ingresos = deudaACancelar.MontoDeuda,
                     IdCliente = deudaACancelar.IdCliente,
-                    MontoFinal = deudaACancelar.MontoDeuda
+                    MontoFinal = deudaACancelar.MontoDeuda,
+                    FechaIngreso = fechaFormateada
                 };
 
                 ventaACobrar.MontoVentas = deudaACancelar.MontoDeuda;

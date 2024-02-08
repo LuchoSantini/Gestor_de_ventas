@@ -2,6 +2,6 @@
 {
     public interface IFlujoFondoService
     {
-        public void ProcesarFlujoFondos(object state);
+        public void ProcesarFlujoFondos();
     }
 }

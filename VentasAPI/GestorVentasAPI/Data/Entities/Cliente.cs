@@ -15,8 +15,8 @@ namespace GestorVentasAPI.Data.Entities
         public string Descripcion { get; set; } = string.Empty;
         public string Tipo { get; set; } = string.Empty;
         public EstadoUsuario Estado { get; set; }
+        public string FechaCreacion { get; set; } = string.Empty;
         public ICollection<DeudaCliente> DeudaClientes { get; set; } = new List<DeudaCliente>();
         public ICollection<Venta> Ventas { get; set; } = new List<Venta>();
-
     }
 }

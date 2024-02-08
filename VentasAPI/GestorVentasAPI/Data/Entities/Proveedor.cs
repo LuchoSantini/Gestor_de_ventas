@@ -13,5 +13,6 @@ namespace GestorVentasAPI.Data.Entities
         public string Apellido { get; set; } = string.Empty;
         public string Descripcion { get; set; } = string.Empty;
         public EstadoUsuario Estado { get; set; }
+        public string FechaCreacion { get; set; }
     }
 }

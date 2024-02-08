@@ -14,6 +14,7 @@ namespace GestorVentasAPI.Data.Entities
         public int IdCliente { get; set; }
         public EstadoVenta Estado { get; set; }
         public decimal MontoVentas { get; set; }
+        public string FechaVenta { get; set; }
         public ICollection<OrdenDeVenta> OrdenDeVentas { get; set; } = new List<OrdenDeVenta>();
     }
 }

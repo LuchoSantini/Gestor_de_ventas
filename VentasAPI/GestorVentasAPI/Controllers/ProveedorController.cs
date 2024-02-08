@@ -26,7 +26,7 @@ namespace GestorVentasAPI.Controllers
         public IActionResult AgregarPago([FromBody] PagoProveedorDTO pagoProveedorDTO)
         {
             _proveedorService.AgregarPago(pagoProveedorDTO);
-            _flujoFondoService.ProcesarFlujoFondos(null);
+            _flujoFondoService.ProcesarFlujoFondos();
             return Ok(pagoProveedorDTO);
         }
 

@@ -27,7 +27,7 @@ namespace GestorVentasAPI.Controllers
         public IActionResult AgregarProductosOrdenDeVenta([FromBody] OrdenDeVentaDTO ordenDeVentaDTO)
         {
             _ventaService.AgregarProductoOrdenDeVenta(ordenDeVentaDTO);
-            _flujoFondoService.ProcesarFlujoFondos(null);
+            _flujoFondoService.ProcesarFlujoFondos();
             return Ok(ordenDeVentaDTO);
         }
     }

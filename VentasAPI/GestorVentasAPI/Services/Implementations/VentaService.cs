@@ -17,10 +17,13 @@ namespace GestorVentasAPI.Services.Implementations
 
         public Venta AgregarOrden(VentaDTO ventaDTO)
         {
+            DateTime fecha = DateTime.Now;
+            string fechaFormateada = fecha.ToString("dd/MM/yyyy HH:mm");
             var ordenParaAgregar = new Venta
             {
                 IdCliente = ventaDTO.IdCliente,
                 Estado = ventaDTO.Estado,
+                FechaVenta = fechaFormateada
             };
 
             _context.Ventas.Add(ordenParaAgregar);
@@ -35,12 +38,16 @@ namespace GestorVentasAPI.Services.Implementations
 
             var venta = _context.Ventas.FirstOrDefault(o => o.Id == ordenDeVentaDTO.IdVenta && o.IdCliente == ordenDeVentaDTO.IdCliente);
 
+            DateTime fecha = DateTime.Now;
+            string fechaFormateada = fecha.ToString("dd/MM/yyyy HH:mm");
+
             // Acá se asignan valores a la tabla OrdenDeVenta
             var nuevaOrdenDeVenta = new OrdenDeVenta
             {
                 IdVenta = ordenDeVentaDTO.IdVenta,
                 Producto = producto,
                 Cantidad = ordenDeVentaDTO.Cantidad,
+                FechaCreacion = fechaFormateada
             };
 
             // Dependiendo del estado de la Venta generada se añade o no el monto a la tabla IngresoCliente
@@ -64,7 +71,8 @@ namespace GestorVentasAPI.Services.Implementations
                 {
                     Ingresos = montoTotalVenta,
                     IdCliente = venta.IdCliente,
-                    MontoFinal = nuevoMontoFinal
+                    MontoFinal = nuevoMontoFinal,
+                    FechaIngreso = fechaFormateada
                 };
 
                 _context.IngresoClientes.Add(nuevoFlujoFondoVenta);
@@ -78,6 +86,7 @@ namespace GestorVentasAPI.Services.Implementations
                     IdCliente = venta.IdCliente,
                     MontoDeuda = montoTotalVenta,
                     Estado = EstadoVenta.Pendiente,
+                    CreacionDeuda = fechaFormateada
                 };
                 _context.DeudaClientes.Add(nuevaDeuda);
             }

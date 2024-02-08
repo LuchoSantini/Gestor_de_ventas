@@ -13,5 +13,6 @@ namespace GestorVentasAPI.Data.Entities
         public decimal Ingresos { get; set; }
         public decimal Pagos { get; set; }
         public decimal SaldoFinal { get; set; }
+        public string FechaActualizacion { get; set; }
     }
 }

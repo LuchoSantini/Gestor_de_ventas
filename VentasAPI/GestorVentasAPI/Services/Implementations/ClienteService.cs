@@ -17,18 +17,22 @@ namespace GestorVentasAPI.Services.Implementations
 
         public Cliente CrearCliente(ClienteDTO dto)
         {
+            DateTime fecha = DateTime.Now;
+            string fechaFormateada = fecha.ToString("dd/MM/yyyy HH:mm");
             var cliente = new Cliente()
             {
                 Nombre = dto.Nombre,
                 Apellido = dto.Apellido,
                 Barrio = dto.Barrio,
                 Descripcion = dto.Descripcion,
-                Tipo = "Cliente"
+                Tipo = "Cliente",
+                FechaCreacion = fechaFormateada
             };
 
             _context.Add(cliente);
             _context.SaveChanges();
             return cliente;
         }
+
     }
 }

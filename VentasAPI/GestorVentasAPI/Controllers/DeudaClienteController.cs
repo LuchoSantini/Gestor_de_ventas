@@ -8,27 +8,18 @@ namespace GestorVentasAPI.Controllers
     public class DeudaClienteController : Controller
     {
         private readonly IDeudaClienteService _deudaClienteService;
-        public DeudaClienteController(IDeudaClienteService deudaClienteService)
+        private readonly IFlujoFondoService _flujoFondoService;
+        public DeudaClienteController(IDeudaClienteService deudaClienteService, IFlujoFondoService flujoFondoService)
         {
             _deudaClienteService = deudaClienteService;
+            _flujoFondoService = flujoFondoService;
         }
-
-        //[HttpPost("Agregar Deuda")]
-        //public IActionResult AgregarDeuda(int idVenta)
-        //{
-        //    var deuda = _deudaClienteService.AgregarDeuda(idVenta);
-
-        //    if(deuda == null)
-        //    {
-        //        return BadRequest("Error: venta cobrada o inexistente");
-        //    }
-        //    return Ok("Deuda agregada");
-        //}
 
         [HttpPut("Cancelar Deuda")]
         public IActionResult CancelarDeuda(int idDeuda)
         {
             _deudaClienteService.CancelarDeudaCompleta(idDeuda);
+            _flujoFondoService.ProcesarFlujoFondos();
             return Ok("Deuda cancelada y cobrada");
         }
     }

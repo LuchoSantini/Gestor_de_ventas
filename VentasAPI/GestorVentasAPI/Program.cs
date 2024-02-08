@@ -21,8 +21,7 @@ namespace GestorVentasAPI
             builder.Services.AddSwaggerGen();
 
             // Conexión a la base de datos (SQLITE). Luego mgirar a SQLServer.
-            builder.Services.AddDbContext<VentasContext>(dbContextOptions => dbContextOptions.UseSqlite(
-            builder.Configuration["DB:ConnectionString"]));
+            builder.Services.AddDbContext<VentasContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             #region Inyecciones de dependencia
             builder.Services.AddScoped<IClienteService, ClienteService>();

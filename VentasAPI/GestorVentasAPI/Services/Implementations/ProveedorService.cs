@@ -17,12 +17,15 @@ namespace GestorVentasAPI.Services.Implementations
         // Agregar Proveedor
         public Proveedor AgregarProveedor(ProveedorDTO proveedorDTO)
         {
+            DateTime fecha = DateTime.Now;
+            string fechaFormateada = fecha.ToString("dd/MM/yyyy HH:mm");
             var nuevoProveedor = new Proveedor
             {
                 Nombre = proveedorDTO.Nombre,
                 Apellido = proveedorDTO.Apellido,
                 Descripcion = proveedorDTO.Descripcion,
                 Estado = EstadoUsuario.Alta, // Siempre que se agregue un proveedor va a estar de alta
+                FechaCreacion = fechaFormateada
             };
             _context.Proveedores.Add(nuevoProveedor);
             _context.SaveChanges();
@@ -48,7 +51,10 @@ namespace GestorVentasAPI.Services.Implementations
         public PagoProveedor AgregarPago(PagoProveedorDTO pagoProveedorDTO)
         {
             Proveedor proveedor = _context.Proveedores.FirstOrDefault(p => p.Id == pagoProveedorDTO.IdProveedor);
-            
+
+            DateTime fecha = DateTime.Now;
+            string fechaFormateada = fecha.ToString("dd/MM/yyyy HH:mm");
+
             decimal montoAnterior = _context.PagoProveedores
                 .Where(pp => pp.IdProveedor == proveedor.Id)
                 .OrderByDescending(pp => pp.Id)
@@ -62,7 +68,8 @@ namespace GestorVentasAPI.Services.Implementations
                 {
                     IdProveedor = proveedor.Id,
                     Pagos = pagoProveedorDTO.MontoAPagar,
-                    MontoFinal = nuevoMontoFinal // Editar esta linea con el montofinal correspondiente
+                    MontoFinal = nuevoMontoFinal,
+                    FechaPago = fechaFormateada
                 };
                 _context.PagoProveedores.Add(nuevoPago);
                 _context.SaveChanges();
