@@ -10,9 +10,11 @@ namespace GestorVentasAPI.Data.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public decimal Ingresos { get; set; }
+        public decimal Ingresoos { get; set; }
+        public decimal MontoFinalIngresos { get; set; }
         public decimal Pagos { get; set; }
+        public decimal MontoFinalPagos { get; set; }
         public decimal SaldoFinal { get; set; }
-        public string FechaActualizacion { get; set; }
+        public string FechaActualizacion { get; set; } = string.Empty;
     }
 }

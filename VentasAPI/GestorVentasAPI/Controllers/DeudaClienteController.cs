@@ -19,7 +19,7 @@ namespace GestorVentasAPI.Controllers
         public IActionResult CancelarDeuda(int idDeuda)
         {
             _deudaClienteService.CancelarDeudaCompleta(idDeuda);
-            _flujoFondoService.ProcesarFlujoFondos();
+            //_flujoFondoService.ProcesarFlujoFondos();
             return Ok("Deuda cancelada y cobrada");
         }
     }

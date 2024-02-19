@@ -104,7 +104,13 @@ namespace GestorVentasAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Ingresos")
+                    b.Property<decimal>("Ingresoos")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("MontoFinalIngresos")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("MontoFinalPagos")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("Pagos")
