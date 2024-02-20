@@ -9,9 +9,11 @@ namespace GestorVentasAPI.Controllers
     public class ClienteController : Controller
     {
         private readonly IClienteService _clienteService;
-        public ClienteController(IClienteService clienteService)
+        private readonly IDeudaClienteService _deudaClienteService;
+        public ClienteController(IClienteService clienteService, IDeudaClienteService deudaClienteService)
         {
             _clienteService = clienteService;
+            _deudaClienteService = deudaClienteService;
         }
 
         [HttpPost("Agregar Cliente")]
@@ -19,6 +21,13 @@ namespace GestorVentasAPI.Controllers
         {
             _clienteService.CrearCliente(dto);
             return Ok(dto);
+        }
+
+        [HttpPut("Cancelar Deuda")]
+        public IActionResult CancelarDeuda(int idDeuda)
+        {
+            _deudaClienteService.CancelarDeudaCompleta(idDeuda);
+            return Ok("Deuda cancelada y cobrada");
         }
     }
 }

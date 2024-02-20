@@ -9,5 +9,10 @@ namespace GestorVentasAPI.Services.Interfaces
         public PagoProveedor AgregarPago(PagoProveedorDTO pagoProveedorDTO);
         public List<PagoProveedor> GetPagoProveedores();
         public List<Proveedor> GetProveedores();
+        public bool ValidarExistenciaProveedor(ProveedorDTO proveedorDTO);
+        public bool EditarPago(PagoAEditarDTO pagoAEditarDTO);
+        public void EliminarProveedor(int idProveedor);
+        public bool EditarProveedor(ProveedorAEditarDTO proveedorAEditarDTO);
+        public void DarDeAlta(int idProveedor);
     }
 }
