@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using GestorVentasAPI.Enums;
+using System.Text.Json.Serialization;
 
 namespace GestorVentasAPI.Data.Entities
 {

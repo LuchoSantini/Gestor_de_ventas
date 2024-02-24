@@ -26,8 +26,27 @@ namespace GestorVentasAPI.Controllers
         [HttpPost("Agregar productos a la Orden de Venta")]
         public IActionResult AgregarProductosOrdenDeVenta([FromBody] OrdenDeVentaDTO ordenDeVentaDTO)
         {
-            _ventaService.AgregarProductoOrdenDeVenta(ordenDeVentaDTO);
-            return Ok(ordenDeVentaDTO);
+            if (_ventaService.AgregarProductoOrdenDeVenta(ordenDeVentaDTO))
+            {
+                return Ok($"Productos agregados correctamente");
+            }
+            return BadRequest("No se encontró la Venta o el Producto");
+        }
+
+        [HttpPut("Editar Orden de Venta")]
+        public IActionResult EditarOrdenDeVenta([FromBody] OrdenDeVentaAEditarDTO ordenDeVentaAEditarDTO)
+        {
+            if (_ventaService.EditarOrdenDeVenta(ordenDeVentaAEditarDTO))
+            {
+                return Ok($"Se editó la Orden de Venta con el siguiente ID: {ordenDeVentaAEditarDTO.Id}");
+            }
+            return BadRequest("Orden de Venta no encontrado");
+        }
+
+        [HttpGet("Traer Ventas")]
+        public IActionResult TraerVentas()
+        {
+            return Ok(_ventaService.TraerVentas());
         }
     }
 }

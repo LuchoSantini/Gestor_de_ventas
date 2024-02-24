@@ -45,7 +45,6 @@ namespace GestorVentasAPI.Services.Implementations
         // Editar Proveedor
         public bool EditarProveedor(ProveedorAEditarDTO proveedorAEditarDTO)
         {
-            // Buscar el proveedor en la base de datos
             Proveedor proveedorAEditar = _context.Proveedores.FirstOrDefault(p => p.Id == proveedorAEditarDTO.Id);
 
             if (proveedorAEditar != null)
@@ -54,7 +53,7 @@ namespace GestorVentasAPI.Services.Implementations
                 proveedorAEditar.Apellido = proveedorAEditarDTO.Apellido;
                 proveedorAEditar.Descripcion = proveedorAEditarDTO.Descripcion;
 
-                _context.Update(proveedorAEditar);
+                _context.Proveedores.Update(proveedorAEditar);
                 _context.SaveChanges();
                 return true;
             }
@@ -109,7 +108,7 @@ namespace GestorVentasAPI.Services.Implementations
         // Validar si el proveedor existe en la base de datos
         public bool ValidarExistenciaProveedor(ProveedorDTO proveedorDTO)
         {
-            var proveedorExistente = _context.Proveedores.FirstOrDefault(p => p.Nombre == proveedorDTO.Nombre && p.Apellido == proveedorDTO.Apellido);
+            Proveedor proveedorExistente = _context.Proveedores.FirstOrDefault(p => p.Nombre == proveedorDTO.Nombre && p.Apellido == proveedorDTO.Apellido);
 
             if (proveedorExistente != null)
             {
@@ -122,7 +121,7 @@ namespace GestorVentasAPI.Services.Implementations
         {
             PagoProveedor pagoAEditar = _context.PagoProveedores.FirstOrDefault(p => p.Id == pagoAEditarDTO.Id);
 
-            if (pagoAEditar?.Id != null)
+            if (pagoAEditar != null)
             {
                 // Calcular la diferencia entre el monto nuevo y el monto anterior del pago
                 decimal diferenciaMonto = pagoAEditarDTO.NuevoMonto - pagoAEditar.Pagos;

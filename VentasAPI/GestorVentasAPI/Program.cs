@@ -23,6 +23,15 @@ namespace GestorVentasAPI
             // Conexión a la base de datos (SQLITE). Luego mgirar a SQLServer.
             builder.Services.AddDbContext<VentasContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+            // Registra ExportarDBExcelService con la cadena de conexión
+            builder.Services.AddSingleton<IExportarDBExcelService>(provider =>
+            {
+                // Obtiene la cadena de conexión desde la configuración
+                string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+                // Crea una instancia de ExportarDBExcelService pasando la cadena de conexión
+                return new ExportarDBExcelService(connectionString);
+            });
+
             #region Inyecciones de dependencia
             builder.Services.AddScoped<IClienteService, ClienteService>();
             builder.Services.AddScoped<IVentaService, VentaService>();
@@ -30,7 +39,6 @@ namespace GestorVentasAPI
             builder.Services.AddScoped<IDeudaClienteService, DeudaClienteService>();
             builder.Services.AddScoped<IProveedorService, ProveedorService>();
             builder.Services.AddScoped<IFlujoFondoService,FlujoFondosService>();
-
             #endregion
 
             var app = builder.Build();

@@ -2,7 +2,7 @@
 {
     public enum EstadoVenta
     {
-        Cobrada,
-        Pendiente
+        Pendiente,
+        Cobrada
     }
 }

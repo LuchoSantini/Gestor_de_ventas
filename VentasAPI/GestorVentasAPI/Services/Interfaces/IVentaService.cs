@@ -6,6 +6,9 @@ namespace GestorVentasAPI.Services.Interfaces
     public interface IVentaService
     {
         public Venta AgregarOrden(VentaDTO ventaDTO);
-        public OrdenDeVenta AgregarProductoOrdenDeVenta(OrdenDeVentaDTO ordenDeVentaDTO);
+        public bool AgregarProductoOrdenDeVenta(OrdenDeVentaDTO ordenDeVentaDTO);
+        public List<Venta> TraerVentas();
+        public Venta GetVentaPorId(int id);
+        public bool EditarOrdenDeVenta(OrdenDeVentaAEditarDTO ordenDeVentaAEditarDTO);
     }
 }

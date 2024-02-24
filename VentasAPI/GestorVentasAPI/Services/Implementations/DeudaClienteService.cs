@@ -15,14 +15,7 @@ namespace GestorVentasAPI.Services.Implementations
             _context = context;
         }
 
-        public Venta GetVentasPorId(int id)
-        {
-            return _context.Ventas
-                .FirstOrDefault(x => x.Id == id);
-        }
-
-
-        public void CancelarDeudaCompleta(int idDeuda)
+        public bool CancelarDeudaCompleta(int idDeuda)
         {
             DeudaCliente deudaACancelar = _context.DeudaClientes.FirstOrDefault(dc => dc.Id == idDeuda);
             Venta ventaACobrar = _context.Ventas.FirstOrDefault(v => v.Id == deudaACancelar.IdVenta);
@@ -30,27 +23,40 @@ namespace GestorVentasAPI.Services.Implementations
             DateTime fecha = DateTime.Now;
             string fechaFormateada = fecha.ToString("dd/MM/yyyy HH:mm");
 
-            if (deudaACancelar != null && deudaACancelar.Estado != EstadoVenta.Cobrada)
+            if (deudaACancelar != null && deudaACancelar.Estado != EstadoVenta.Cobrada && ventaACobrar != null)
             {
-                // Actualizar la deuda a cobrada
+                // Calculo del nuevo MontoFinal
+                decimal montoAnterior = _context.IngresoClientes
+                    .Where(ic => ic.IdCliente == deudaACancelar.IdCliente)
+                    .OrderByDescending(ic => ic.Id)
+                    .Select(ic => ic.MontoFinal)
+                    .FirstOrDefault();
 
+                decimal nuevoMontoFinal = montoAnterior + deudaACancelar.MontoDeuda;
+
+                // Actualizar la deuda a cobrada
                 var nuevoFlujoFondoDeudaCancelada = new IngresoCliente
                 {
                     Ingresos = deudaACancelar.MontoDeuda,
                     IdCliente = deudaACancelar.IdCliente,
-                    MontoFinal = deudaACancelar.MontoDeuda,
+                    MontoFinal = nuevoMontoFinal,
                     FechaIngreso = fechaFormateada
                 };
 
                 ventaACobrar.MontoVentas = deudaACancelar.MontoDeuda;
                 deudaACancelar.MontoDeuda = 0;
                 deudaACancelar.Estado = EstadoVenta.Cobrada;
+                ventaACobrar.Estado = EstadoVenta.Cobrada;
 
+                _context.Ventas.Update(ventaACobrar);
                 _context.DeudaClientes.Update(deudaACancelar);
                 _context.IngresoClientes.Add(nuevoFlujoFondoDeudaCancelada);
                 _context.SaveChanges();
+                return true;
             }
+            return false;
         }
+
     }
 }
 

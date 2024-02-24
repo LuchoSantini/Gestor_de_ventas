@@ -15,19 +15,65 @@ namespace GestorVentasAPI.Services.Implementations
             _context = context;
         }
 
-        public Producto AgregarProducto(ProductoDTO productoDTO)
+        public bool AgregarProducto(ProductoDTO productoDTO)
         {
-            var producto = new Producto
+            Producto productoExistente = _context.Productos.FirstOrDefault(p => p.Nombre == productoDTO.Nombre && p.Calibre == productoDTO.Calibre);
+
+            // Tener en cuenta agregar una tabla para los Calibres. (Calibre refiere al tamaño del producto en litros o kilos)
+            if (productoExistente == null)
             {
-                Nombre = productoDTO.Nombre,
-                Calibre = productoDTO.Calibre,
-                Descripcion = productoDTO.Descripcion,
-                Precio = productoDTO.Precio,
-                Estado = EstadoProducto.Alta,
-            };
-            _context.Productos.Add(producto);
+                var producto = new Producto
+                {
+                    Nombre = productoDTO.Nombre,
+                    Calibre = productoDTO.Calibre,
+                    Descripcion = productoDTO.Descripcion,
+                    Precio = productoDTO.Precio,
+                    Estado = EstadoProducto.Alta,
+                };
+                _context.Productos.Add(producto);
+                _context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
+        public bool EditarProducto(ProductoDTO productoDTO)
+        {
+            Producto productoAEditar = _context.Productos.FirstOrDefault(p => p.Id == productoDTO.Id);
+
+            if (productoAEditar != null)
+            {
+                productoAEditar.Nombre = productoDTO.Nombre;
+                productoAEditar.Calibre = productoDTO.Calibre;
+                productoAEditar.Descripcion = productoDTO.Descripcion;
+
+                _context.Update(productoAEditar);
+                _context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
+        public void EliminarProducto(int idProducto)
+        {
+            Producto productoAEliminar = _context.Productos.FirstOrDefault(p => p.Id == idProducto);
+            productoAEliminar.Estado = EstadoProducto.Baja;
+            _context.Update(productoAEliminar);
             _context.SaveChanges();
-            return producto;
+        }
+
+        public void DarDeAltaProducto(int idProducto)
+        {
+            Producto productoADarDeAlta = _context.Productos.FirstOrDefault(p => p.Id == idProducto);
+            productoADarDeAlta.Estado = EstadoProducto.Alta;
+            _context.Update(productoADarDeAlta);
+            _context.SaveChanges();
+        }
+
+        public List<Producto> TraerProductos()
+        {
+            var productos = _context.Productos.Where(p => p.Estado == EstadoProducto.Alta).ToList();
+            return productos;
         }
     }
 }

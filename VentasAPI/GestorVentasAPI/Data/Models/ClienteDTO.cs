@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using GestorVentasAPI.Enums;
+using System.Text.Json.Serialization;
 
 namespace GestorVentasAPI.Data.Models
 {
@@ -8,6 +9,8 @@ namespace GestorVentasAPI.Data.Models
         public string Apellido { get; set; } = string.Empty;
         public string Barrio { get; set; } = string.Empty;
         public string Descripcion { get; set; } = string.Empty;
+        [JsonIgnore]
+        public EstadoUsuario Estado { get; set; }
         [JsonIgnore]
         public string FechaCreacion { get; set; }
     }

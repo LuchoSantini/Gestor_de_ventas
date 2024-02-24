@@ -26,27 +26,11 @@ namespace GestorVentasAPI.Controllers
             return Ok("Proveedor agregado exitosamente");
         }
 
-        [HttpPut("Editar Proveedor")]
-        public IActionResult EditarProveedor([FromBody] ProveedorAEditarDTO proveedorAEditarDTO)
+        [HttpPost("Agregar Pago")]
+        public IActionResult AgregarPago([FromBody] PagoProveedorDTO pagoProveedorDTO)
         {
-            if (_proveedorService.EditarProveedor(proveedorAEditarDTO))
-            {
-                return Ok($"Se editó el Proveedor con el siguiente ID: {proveedorAEditarDTO.Id}");
-            }
-            return BadRequest("Proveedor no encontrado");
-        }
-
-        [HttpDelete("Eliminar Proveedor")]
-        public IActionResult EliminarProveedor(int idProveedor)
-        {
-            _proveedorService.EliminarProveedor(idProveedor);
-            return Ok();
-        }
-        [HttpPut("Dar de alta Proveedor")]
-        public IActionResult DarDeAlta(int idProveedor)
-        {
-            _proveedorService.DarDeAlta(idProveedor);
-            return Ok();
+            _proveedorService.AgregarPago(pagoProveedorDTO);
+            return Ok(pagoProveedorDTO);
         }
 
         [HttpGet("Traer Proveedores")]
@@ -56,21 +40,38 @@ namespace GestorVentasAPI.Controllers
             return Ok(pagos);
         }
 
-        [HttpPost("Agregar Pago")]
-        public IActionResult AgregarPago([FromBody] PagoProveedorDTO pagoProveedorDTO)
+        [HttpPut("Editar Proveedor")]
+        public IActionResult EditarProveedor(ProveedorAEditarDTO proveedorAEditarDTO)
         {
-            _proveedorService.AgregarPago(pagoProveedorDTO);
-            return Ok(pagoProveedorDTO);
+            if (_proveedorService.EditarProveedor(proveedorAEditarDTO))
+            {
+                return Ok($"Se editó el Proveedor con el siguiente ID: {proveedorAEditarDTO.Id}");
+            }
+            return BadRequest("Proveedor no encontrado");
+        }
+
+        [HttpPut("Dar de alta Proveedor")]
+        public IActionResult DarDeAlta(int idProveedor)
+        {
+            _proveedorService.DarDeAlta(idProveedor);
+            return Ok();
         }
 
         [HttpPut("Editar Pago")]
-        public IActionResult EditarPago([FromBody] PagoAEditarDTO pagoAEditarDTO)
+        public IActionResult EditarPago(PagoAEditarDTO pagoAEditarDTO)
         {
-            if(_proveedorService.EditarPago(pagoAEditarDTO))
+            if (_proveedorService.EditarPago(pagoAEditarDTO))
             {
                 return Ok($"Se editó el pago con el siguiente ID: {pagoAEditarDTO.Id}");
             }
             return BadRequest("Pago no encontrado");
+        }
+
+        [HttpDelete("Eliminar Proveedor")]
+        public IActionResult EliminarProveedor(int idProveedor)
+        {
+            _proveedorService.EliminarProveedor(idProveedor);
+            return Ok();
         }
     }
 }

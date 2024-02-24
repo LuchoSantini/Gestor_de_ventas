@@ -5,6 +5,10 @@ namespace GestorVentasAPI.Services.Interfaces
 {
     public interface IProductoService
     {
-        public Producto AgregarProducto(ProductoDTO productoDTO);
+        public bool AgregarProducto(ProductoDTO productoDTO);
+        public bool EditarProducto(ProductoDTO productoDTO);
+        public void EliminarProducto(int idProducto);
+        public void DarDeAltaProducto(int idProducto);
+        public List<Producto> TraerProductos();
     }
 }
