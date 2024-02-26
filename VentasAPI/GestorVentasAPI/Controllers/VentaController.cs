@@ -9,11 +9,9 @@ namespace GestorVentasAPI.Controllers
     public class VentaController : Controller
     {
         private readonly IVentaService _ventaService;
-        private readonly IFlujoFondoService _flujoFondoService;
-        public VentaController(IVentaService ventaService, IFlujoFondoService flujoFondoService)
+        public VentaController(IVentaService ventaService)
         {
             _ventaService = ventaService;
-            _flujoFondoService = flujoFondoService;
         }
 
         [HttpPost("Agregar Orden de Venta")]

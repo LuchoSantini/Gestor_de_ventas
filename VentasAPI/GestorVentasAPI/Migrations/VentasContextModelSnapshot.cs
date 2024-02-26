@@ -100,24 +100,19 @@ namespace GestorVentasAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("FechaActualizacion")
+                    b.Property<string>("Fecha")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Ingresoos")
+                    b.Property<decimal>("Monto")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("MontoFinalIngresos")
+                    b.Property<decimal>("MontoFinal")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("MontoFinalPagos")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("Pagos")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("SaldoFinal")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<string>("Tipo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

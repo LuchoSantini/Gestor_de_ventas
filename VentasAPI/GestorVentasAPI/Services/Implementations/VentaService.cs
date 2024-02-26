@@ -10,9 +10,11 @@ namespace GestorVentasAPI.Services.Implementations
     public class VentaService : IVentaService
     {
         private readonly VentasContext _context;
-        public VentaService(VentasContext context)
+        private readonly IFlujoFondoService _flujoFondoService;
+        public VentaService(VentasContext context, IFlujoFondoService flujoFondoService)
         {
             _context = context;
+            _flujoFondoService = flujoFondoService;
         }
 
         public Venta AgregarOrden(VentaDTO ventaDTO)
@@ -75,6 +77,7 @@ namespace GestorVentasAPI.Services.Implementations
                         FechaIngreso = fechaFormateada
                     };
 
+                    _flujoFondoService.ProcesarFlujoFondoIngresos();
                     _context.IngresoClientes.Add(nuevoFlujoFondoVenta);
                     _context.OrdenDeVentas.Add(nuevaOrdenDeVenta);
                 }

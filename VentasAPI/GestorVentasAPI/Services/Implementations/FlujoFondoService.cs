@@ -1,6 +1,7 @@
 ﻿using GestorVentasAPI.Context;
 using GestorVentasAPI.Data.Entities;
 using GestorVentasAPI.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -8,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using static Microsoft.IO.RecyclableMemoryStreamManager;
 
 namespace GestorVentasAPI.Services.Implementations
 {
@@ -19,48 +21,68 @@ namespace GestorVentasAPI.Services.Implementations
             _context = context;
         }
 
-        public void ProcesarFlujoFondos()
+        public void ProcesarFlujoFondoIngresos()
         {
-            IngresoCliente tablaIngresos = _context.IngresoClientes.OrderBy(ic => ic.Id).LastOrDefault();
-            PagoProveedor tablaPagos = _context.PagoProveedores.OrderBy(pp => pp.Id).LastOrDefault();
+            IngresoCliente ingresos = _context.IngresoClientes.OrderByDescending(ic => ic.Id).FirstOrDefault();
 
-            decimal ingresos = tablaIngresos.Ingresos;
-            decimal pagos = tablaPagos.Pagos;
-            decimal montoIngresos = tablaIngresos.MontoFinal;
-            decimal montoPagos = tablaPagos.MontoFinal;
-            decimal montoFinal = montoIngresos - montoPagos;
-
-            /*
-             Editar esto de la siguiente maner para calcular el monto final:
-              Corregir: el metodo para calcular el monto final esta mal y es un test.
-                No se debe tomar el ultimo ingreso o el ultimo pago.
-                Tomar datos por ID.
-                Agregar a FlujoFondos las columnas de montoFinal de ingresos y de pagos, dejar las de
-                ingresos y de pagos. 
-             */
+            decimal montoAnterior = _context.FlujoFondos
+                    .OrderByDescending(ic => ic.Id)
+                    .Select(ic => ic.MontoFinal)
+                    .FirstOrDefault();
 
             DateTime fecha = DateTime.Now;
             string fechaFormateada = fecha.ToString("dd/MM/yyyy HH:mm");
 
-            var flujoFondosIng = new FlujoFondo
+            if (ingresos != null)
             {
-                    Ingresoos = ingresos,
-                    MontoFinalIngresos = montoIngresos,
-                    SaldoFinal = montoFinal,
-                    FechaActualizacion = fechaFormateada
-            };
 
-            var flujoFondosPag = new FlujoFondo
+                var flujoFondoIngresos = new FlujoFondo
+                {
+                    Monto = ingresos.Ingresos,
+                    Tipo = "Ingreso",
+                    Fecha = fechaFormateada
+                };
+
+                if (flujoFondoIngresos.Tipo == "Ingreso" || flujoFondoIngresos.Tipo == "Ingreso por deuda")
+                {
+                    decimal nuevoMontoFinal = montoAnterior + ingresos.Ingresos;
+                    flujoFondoIngresos.MontoFinal = nuevoMontoFinal;
+                }
+
+                _context.FlujoFondos.Add(flujoFondoIngresos);
+                _context.SaveChanges();
+            }
+        }
+
+        public void ProcesarFlujoFondoPagos()
+        {
+            PagoProveedor pagos = _context.PagoProveedores.OrderByDescending(pp => pp.Id).FirstOrDefault();
+
+            decimal montoAnterior = _context.FlujoFondos
+                    .OrderByDescending(ic => ic.Id)
+                    .Select(ic => ic.MontoFinal)
+                    .FirstOrDefault();
+            
+            DateTime fecha = DateTime.Now;
+            string fechaFormateada = fecha.ToString("dd/MM/yyyy HH:mm");
+
+            if (pagos != null) 
             {
-                    Pagos = pagos,
-                    MontoFinalPagos = montoPagos,
-                    SaldoFinal = montoFinal,
-                    FechaActualizacion = fechaFormateada
-            };
+                var flujoFondoPagos = new FlujoFondo
+                {
+                    Monto = pagos.Pagos,
+                    Tipo = "Pago",
+                    Fecha = fechaFormateada
+                };
 
-            _context.FlujoFondos.Add(flujoFondosIng);
-            _context.FlujoFondos.Add(flujoFondosPag);
-            _context.SaveChanges();
+                if (flujoFondoPagos.Tipo == "Pago")
+                {
+                    decimal nuevoMontoFinal = montoAnterior - flujoFondoPagos.Monto;
+                    flujoFondoPagos.MontoFinal = nuevoMontoFinal;
+                }
+                _context.FlujoFondos.Add(flujoFondoPagos);
+                _context.SaveChanges();
+            }
         }
     }
 }

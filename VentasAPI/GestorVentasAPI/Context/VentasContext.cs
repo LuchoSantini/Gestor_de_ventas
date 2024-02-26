@@ -35,20 +35,20 @@ namespace GestorVentasAPI.Context
                 .WithMany()
                 .HasForeignKey(v => v.IdCliente);
 
-            modelBuilder.Entity<OrdenDeVenta>()
-                .HasOne(odv => odv.Producto)
-                .WithMany()
-                .HasForeignKey(odv => odv.IdProducto);
+            modelBuilder.Entity<Venta>()
+                .HasOne(v => v.Cliente)
+                .WithMany(c => c.Ventas)
+                .HasForeignKey(v => v.IdCliente);
 
             modelBuilder.Entity<Venta>()
                 .HasMany(v => v.OrdenDeVentas)
                 .WithOne()
                 .HasForeignKey(odv => odv.IdVenta);
 
-            modelBuilder.Entity<Venta>()
-                .HasOne(v => v.Cliente)
-                .WithMany(c => c.Ventas)
-                .HasForeignKey(v => v.IdCliente);
+            modelBuilder.Entity<OrdenDeVenta>()
+                .HasOne(odv => odv.Producto)
+                .WithMany()
+                .HasForeignKey(odv => odv.IdProducto);
 
             modelBuilder.Entity<IngresoCliente>()
                 .HasOne(ff => ff.Cliente)
@@ -59,6 +59,16 @@ namespace GestorVentasAPI.Context
                 .HasOne(ff => ff.Proveedor)
                 .WithMany()
                 .HasForeignKey(ff => ff.IdProveedor);
+
+            //modelBuilder.Entity<FlujoFondo>()
+            //    .HasOne(ff => ff.IngresoCliente)
+            //    .WithMany()
+            //    .HasForeignKey(ff => ff.IdIngresoCliente);
+
+            //modelBuilder.Entity<FlujoFondo>()
+            //    .HasOne(ff => ff.PagoProveedor)
+            //    .WithMany()
+            //    .HasForeignKey(ff => ff.IdPagoProveedor);
         }
     }
 }

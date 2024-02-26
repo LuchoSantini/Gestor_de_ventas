@@ -2,6 +2,7 @@
 {
     public interface IFlujoFondoService
     {
-        public void ProcesarFlujoFondos();
+        public void ProcesarFlujoFondoIngresos();
+        public void ProcesarFlujoFondoPagos();
     }
 }

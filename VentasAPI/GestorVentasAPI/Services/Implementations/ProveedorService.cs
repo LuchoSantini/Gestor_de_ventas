@@ -10,9 +10,12 @@ namespace GestorVentasAPI.Services.Implementations
     public class ProveedorService : IProveedorService
     {
         private readonly VentasContext _context;
-        public ProveedorService(VentasContext context)
+        private readonly IFlujoFondoService _flujoFondoService;
+
+        public ProveedorService(VentasContext context, IFlujoFondoService flujoFondoService)
         {
             _context = context;
+            _flujoFondoService = flujoFondoService;
         }
 
         // Agregar Proveedor
@@ -99,6 +102,7 @@ namespace GestorVentasAPI.Services.Implementations
                     MontoFinal = nuevoMontoFinal,
                     FechaPago = fechaFormateada
                 };
+                _flujoFondoService.ProcesarFlujoFondoPagos();
                 _context.PagoProveedores.Add(nuevoPago);
                 _context.SaveChanges();
                 return nuevoPago;
